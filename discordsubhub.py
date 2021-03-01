@@ -47,9 +47,10 @@ async def web_app():
     async def subscribe(request):
         if request.headers is not None:
             token = request.headers.get("token")
-            limited = await limit.check_rate(
-                ip=request.remote, token=token == hub.api_token
+            hastoken = (
+                True if (token is not None) and (token == hub.api_token) else False
             )
+            limited = await limit.check_rate(ip=request.remote, token=hastoken)
             if limited:
                 webhook_url = request.headers.get("webhook_url")
                 channel_url = request.headers.get("channel_url")
@@ -60,7 +61,7 @@ async def web_app():
                         webhook_url=webhook_url, channel_url=channel_url, mode=mode
                     )
                     if success:
-                        return web.Response(text=f"Successfully {mode.title()}ed")
+                        return web.Response(text=f"Successfully {mode.title()}d")
             else:
                 return web.Response(text="slowdown!", status=429)
 

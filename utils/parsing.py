@@ -54,4 +54,3 @@ def webhook_body(creator: str, video_link: str):
         "username": "DiscordSubHub",
         "avatar_url": "https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png",
     }
-

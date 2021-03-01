@@ -14,7 +14,8 @@ class Mongo_Youtube:
         self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(self.MONGOURI))
         self.database = self.mongo["discordsubhub"]
         self.collection = self.database["youtube"]
-        print("connected to db")
+        if self.MONGOURI is not None:
+            print("connected to db")
 
     async def get_webhooks(self, channel_id):
         channel = await self.collection.find_one({"_id": channel_id})

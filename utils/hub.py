@@ -18,6 +18,9 @@ class Hub:
         self.verify_token = os.environ.get("VERIFYTOKEN")
         self.api_token = os.environ.get("APITOKEN")
 
+        if (self.verify_token is not None) and (self.api_token is not None):
+            print("Tokens Used")
+
     # -- Pointer Methods --
     async def GET(
         self, url: str, headers: dict = None, params: dict = None, data: dict = None,
