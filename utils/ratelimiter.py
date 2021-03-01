@@ -7,7 +7,9 @@ class RateLimiter:
         self.timestamps = {}
 
     async def check_rate(self, ip: str, token: bool):
-        if not token:
+        if token:
+            return True
+        else:
             if ip not in self.timestamps:
                 self.timestamps[ip] = datetime.now()
                 return True
@@ -18,6 +20,3 @@ class RateLimiter:
                     return True
                 else:
                     return False
-        else:
-            return True
-

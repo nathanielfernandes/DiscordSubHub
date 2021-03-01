@@ -1,6 +1,5 @@
 import os
 import aiohttp
-
 import jinja2
 import aiohttp_jinja2
 from aiohttp import web
@@ -22,6 +21,10 @@ async def web_app():
     async def index(request):
         context = {"name": ":)"}
         return context
+
+    @routes.get("/timestamps")
+    async def timestamps(request):
+        return web.Response(text=str(limit.timestamps))
 
     @routes.get("/coffee")
     async def wake_up(request):
@@ -50,7 +53,8 @@ async def web_app():
             hastoken = (
                 True if (token is not None) and (token == hub.api_token) else False
             )
-            limited = await limit.check_rate(ip=request.remote, token=hastoken)
+            ip = request.remote
+            limited = await limit.check_rate(ip=ip, token=hastoken)
             if limited:
                 webhook_url = request.headers.get("webhook_url")
                 channel_url = request.headers.get("channel_url")
@@ -75,8 +79,3 @@ async def web_app():
 
     app.add_routes(routes)
     return app
-
-
-# if __name__ == "__main__":
-#     port = int(os.environ.get("PORT", 8000))
-#     web.run_app(web_app(), port=port)
