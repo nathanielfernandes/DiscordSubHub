@@ -45,7 +45,7 @@ async def web_app():
 
                 if webhook_url and channel_url:
                     success = await hub.pubsubhub(
-                        webhook_url=webhook_url, channel_url=channel_url, mode="mode"
+                        webhook_url=webhook_url, channel_url=channel_url, mode=mode
                     )
                     if success:
                         return web.Response(text=f"Successfully {mode.title()}ed")
