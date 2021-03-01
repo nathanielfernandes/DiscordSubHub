@@ -6,7 +6,7 @@ import motor.motor_asyncio
 
 class Mongo_Youtube:
     def __init__(self):
-        MONGOURI = os.environ.get("MONGOURI")
+        MONGOURI = os.environ.get("MONGOURI",)
         self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(MONGOURI))
         self.database = self.mongo["discordsubhub"]
         self.collection = self.database["youtube"]

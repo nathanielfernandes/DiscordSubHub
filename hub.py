@@ -11,6 +11,7 @@ class Hub:
         self.pubsubhub_url = "https://pubsubhubbub.appspot.com/subscribe"
         self.sesion = aiohttp.ClientSession()
         self.verify_token = os.environ.get("VERIFYTOKEN")
+        self.api_token = os.environ.get("APITOKEN")
 
     # -- Pointer Methods --
     async def GET(
