@@ -3,13 +3,18 @@ import datetime
 import pymongo
 import motor.motor_asyncio
 
+# from dotenv import load_dotenv
+
+# load_dotenv()
+
 
 class Mongo_Youtube:
     def __init__(self):
-        MONGOURI = os.environ.get("MONGOURI",)
-        self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(MONGOURI))
+        self.MONGOURI = os.environ.get("MONGOURI")
+        self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(self.MONGOURI))
         self.database = self.mongo["discordsubhub"]
         self.collection = self.database["youtube"]
+        print("connected to db")
 
     async def get_webhooks(self, channel_id):
         channel = await self.collection.find_one({"_id": channel_id})

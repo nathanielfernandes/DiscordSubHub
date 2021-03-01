@@ -1,8 +1,13 @@
 import os
 import aiohttp
-from mongo import *
-from parsing import *
+from utils.mongo import *
+from utils.parsing import *
 from copy import copy
+
+
+# from dotenv import load_dotenv
+
+# load_dotenv()
 
 
 class Hub:
@@ -80,27 +85,31 @@ class Hub:
     async def pubsubhub(
         self, webhook_url: str, channel_url: str, mode: str = "subscribe"
     ):
-        hook = await self.GET(webhook_url)
-        channel = await self.GET(channel_url)
-        hook = hook.status
-        channel = channel.status
-        if (hook == 200) and (channel == 200):
-            channel_id = parse_channel_url(channel_url)
+        if channel_url.startswith(
+            "https://www.youtube.com/channel/"
+        ) and webhook_url.startswith("https://discord.com/api/webhooks/"):
 
-            exists = await self.db.exists(channel_id)
-            data = pubsubhub_data(
-                channel_id=channel_id, verify_token=self.verify_token, mode=mode,
-            )
-            if mode == "subscribe":
-                if not exists:
-                    await self.POST(self.pubsubhub_url, data=data)
+            hook = await self.GET(webhook_url)
+            channel = await self.GET(channel_url)
+            hook = hook.status
+            channel = channel.status
 
-                await self.db.upsert_channel(channel_id)
-                await self.db.upsert_webhook(channel_id, webhook_url)
+            if (hook == 200) and (channel == 200):
+                channel_id = parse_channel_url(channel_url)
+                exists = await self.db.exists(channel_id)
+                data = pubsubhub_data(
+                    channel_id=channel_id, verify_token=self.verify_token, mode=mode,
+                )
+                if mode == "subscribe":
+                    if not exists:
+                        await self.POST(self.pubsubhub_url, data=data)
 
-            else:
-                await self.remove_webhook(channel_id, webhook_url)
-            return True
+                    await self.db.upsert_channel(channel_id)
+                    await self.db.upsert_webhook(channel_id, webhook_url)
+                else:
+                    await self.remove_webhook(channel_id, webhook_url)
+
+                return True
         return False
 
     async def dispatch_notification(self, xml_data):

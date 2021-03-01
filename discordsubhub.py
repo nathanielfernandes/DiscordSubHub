@@ -1,8 +1,11 @@
 import os
 import aiohttp
+
+import jinja2
+import aiohttp_jinja2
 from aiohttp import web
-from hub import Hub
-from ratelimiter import RateLimiter
+from utils.hub import Hub
+from utils.ratelimiter import RateLimiter
 
 
 async def web_app():
@@ -10,10 +13,19 @@ async def web_app():
     limit = RateLimiter(rate=5)
     app = web.Application()
     routes = web.RouteTableDef()
+    aiohttp_jinja2.setup(
+        app, loader=jinja2.FileSystemLoader(os.path.join(os.getcwd(), "templates"))
+    )
+
+    @routes.get("/")
+    @aiohttp_jinja2.template("index.html")
+    async def index(request):
+        context = {"name": ":)"}
+        return context
 
     @routes.get("/coffee")
     async def wake_up(request):
-        return web.Response(text="thankyou :)")
+        return web.Response(text="thanks for the coffee :)")
 
     @routes.get("/pubsubhubbub")
     async def verify_subscription(request):
@@ -50,13 +62,15 @@ async def web_app():
                     if success:
                         return web.Response(text=f"Successfully {mode.title()}ed")
             else:
-
                 return web.Response(text="slowdown!", status=429)
 
-        return web.Response(
-            text="Invalid/Missing 'webhook_url' and/or 'channel_url' header(s)",
-            status=400,
-        )
+            return web.Response(
+                text="Invalid 'webhook_url' and/or 'channel_url' header(s)", status=400,
+            )
+        else:
+            return web.Response(
+                text="Missing 'webhook_url' and/or 'channel_url' header(s)", status=400,
+            )
 
     app.add_routes(routes)
     return app

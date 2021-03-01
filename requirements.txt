@@ -4,3 +4,5 @@ motor
 flask
 gunicorn
 aiohttp
+jinja2
+aiohttp-jinja2
