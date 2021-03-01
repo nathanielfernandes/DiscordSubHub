@@ -3,3 +3,4 @@ dnspython
 motor
 flask
 gunicorn
+aiohttp
