@@ -1,13 +1,90 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <title>aiohttp page</title>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="DiscordSubHub" />
+    <meta property="og:description" content="A user-friendly Feed API designed for Discord Webhooks" />
+    <meta property="og:image"
+        content="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" />
+    <link rel="icon"
+        href="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <title>DiscordSubHub</title>
+
+    <style>
+        body {
+            width: 100%;
+            margin: auto;
+            font-family: "Helvetica Neue";
+        }
+
+        form {
+            width: 100%;
+            /* width: 550px;
+            height: 450px; */
+            margin: auto;
+            position: relative;
+        }
+
+        input {
+            width: 400px;
+            height: 25px;
+        }
+
+        input.button {
+            width: 201px;
+            height: 25px;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .column {
+            flex: left;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div>
-        <h1>Work In Progres {{ name }}</h1>
+    <div class="row">
+        <div class="column">
+
+            <form method="POST">
+                <table>
+                    <h1>DiscordSubHub</h1>
+                    <tr>
+                        <td><strong>Webhook Url:</strong></td>
+                        <td> <input type="text" name="webhook_url" id="webhook_url" value="{{ prev_webhook_url }}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Youtube Channel Url:</strong></td>
+                        <td> <input type=" text" name="channel_url" id="channel_url" value="{{ prev_channel_url }}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><strong>{{ info }}</strong></p>
+                        </td>
+                        <td> <input class="button" type="submit" formaction="/form/subscribe" value="subscribe"> <input
+                                class="button" type="submit" formaction="/form/unsubscribe" value="unsubscribe"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="column">
+            <img src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png"
+                style="vertical-align: middle;" width="250px" />
+
+        </div>
     </div>
 </body>
+
 
 </html>

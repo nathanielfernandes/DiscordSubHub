@@ -1,9 +1,9 @@
 <p align="center"> 
-<img src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" alt="DiscordSubHub" width=150>
+<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" alt="DiscordSubHub" width=150>
 </p>
 <!-- <img src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" alt="DiscordSubHub" class="center"> -->
 <h1 align="center">
-  DiscordSubHub
+  <a href="https://discordsubhub.herokuapp.com/">DiscordSubHub</a>
 </h1>
 
 <h3 align="center">A user-friendly Feed API designed for Discord Webhooks.</h3>
@@ -46,6 +46,8 @@ It is currently in use by my Discord Bot [Hamood](https://nathanielfernandes.git
 - Reference [Usage](#Usage) to learn about the request formats.
 
 <br>
+
+If you are subscribing manually, use this URL: [DiscordSubHub](https://discordsubhub.herokuapp.com/)
 
 When using the public DiscordSubHub API, use the URL:
 #### POST

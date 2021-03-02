@@ -3,10 +3,6 @@ import datetime
 import pymongo
 import motor.motor_asyncio
 
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
 
 class Mongo_Youtube:
     def __init__(self):
@@ -14,8 +10,6 @@ class Mongo_Youtube:
         self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(self.MONGOURI))
         self.database = self.mongo["discordsubhub"]
         self.collection = self.database["youtube"]
-        if self.MONGOURI is not None:
-            print("connected to db")
 
     async def get_webhooks(self, channel_id):
         channel = await self.collection.find_one({"_id": channel_id})
@@ -70,3 +64,5 @@ class Mongo_Youtube:
         webhooks = await self.get_webhooks(channel_id)
         if webhooks is not None:
             return webhook in webhooks
+        else:
+            return False

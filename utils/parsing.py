@@ -35,6 +35,7 @@ def parse_channel_url(url: str):
     return url.strip("https://www.youtube.com/channel/")
 
 
+# https://discordsubhub.herokuapp.com/pubsubhubbub
 def pubsubhub_data(channel_id: str, verify_token: str, mode: str = "subscribe"):
     data = {
         "hub.callback": "https://discordsubhub.herokuapp.com/pubsubhubbub",
