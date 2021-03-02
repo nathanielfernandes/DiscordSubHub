@@ -5,11 +5,6 @@ from utils.parsing import *
 from copy import copy
 
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-
 class Hub:
     def __init__(self):
         self.db = Mongo_Youtube()
