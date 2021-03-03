@@ -37,7 +37,7 @@ async def web_app():
         webhook_url, channel_url = form.get("webhook_url"), form.get("channel_url")
 
         # check to see if the user is not within the rate limit
-        is_limited = await rate_limit.check_rate(webhook_url)
+        is_limited, t = await rate_limit.check_rate(webhook_url)
 
         if not is_limited:
             if mode == "test":
@@ -48,7 +48,7 @@ async def web_app():
                     webhook_url=webhook_url, channel_url=channel_url, mode=mode
                 )
         else:
-            info = "Slow Down! (5s)"
+            info = f"Slow Down! {t}s"
 
         # keep the entered info inside the form
         return {
@@ -100,7 +100,7 @@ async def web_app():
             mode = request.headers.get("mode", "subscribe")
 
             # check to see if the user is not within the rate limit
-            is_limited = await rate_limit.check_rate(
+            is_limited, t = await rate_limit.check_rate(
                 webhook=webhook_url, token=token == hub.api_token
             )
             if not is_limited:
@@ -110,7 +110,7 @@ async def web_app():
                 )
                 return web.Response(text=info, status=status)
             else:
-                return web.Response(text="Slow Down! (5s)", status=429)
+                return web.Response(text=f"Slow Down! {t}s", status=429)
         return web.Response(
             text="missing webhook_url and channel_url headers", status=400
         )

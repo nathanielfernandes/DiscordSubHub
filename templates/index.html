@@ -20,6 +20,8 @@
             width: 100%;
             margin: auto;
             font-family: "Helvetica Neue";
+            background-color: #2C2F33;
+            color: white;
         }
 
         form {
@@ -31,18 +33,63 @@
         }
 
         input {
+            font-family: "Helvetica Neue";
             width: 400px;
             height: 25px;
+            border-radius: 6px;
+            border: none;
         }
 
-        input.button {
-            width: 201px;
+        .subscribe {
+            width: 200px;
             height: 25px;
+            border-radius: 6px;
+            color: white;
+            border: none;
+            transition: all 0.2s;
+            background-color: #7289DA;
+            font-weight: bold;
         }
 
-        input.button1 {
+        .unsubscribe {
+            width: 200px;
+            height: 25px;
+            border-radius: 6px;
+            color: white;
+            border: none;
+            transition: all 0.2s;
+            background-color: #99AAB5;
+            font-weight: bold;
+        }
+
+        .test {
             width: 40px;
             height: 30px;
+            background-color: #23272A;
+            color: white;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .subscribe:hover {
+            /* box-shadow: 0 8px 15px rgba(0, 0, 0, .2); */
+            box-shadow: 0px 8px 15px #8093d73e;
+            background-color: #8c9fe4;
+            cursor: pointer;
+        }
+
+        .unsubscribe:hover {
+            /* box-shadow: 0 8px 15px rgba(0, 0, 0, .2); */
+            box-shadow: 0px 8px 15px #99aab523;
+            background-color: #7c8991;
+            cursor: pointer;
+        }
+
+        .test:hover {
+            /* box-shadow: 0 8px 15px rgba(0, 0, 0, .2); */
+            box-shadow: 0px 8px 15px #8093d73e;
+            background-color: #7289DA;
+            cursor: pointer;
         }
 
         .row {
@@ -53,6 +100,27 @@
             flex: left;
             padding: 10px;
         }
+
+        .copyright {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #23272A;
+            color: white;
+            float: left;
+            /* text-align: center; */
+        }
+
+        i#github {
+            color: white;
+            transition: all 0.2s;
+        }
+
+        i#github:hover {
+            box-shadow: 0px 0px 15px #8093d73e;
+            color: #7289DA;
+        }
     </style>
 </head>
 
@@ -61,38 +129,54 @@
         <div class="column">
             <form method="POST">
                 <table>
-                    <h1>DiscordSubHub
-                    </h1>
-
+                    <h1>DiscordSubHub</h1>
                     <tr>
-                        <td><strong>Webhook Url:</strong></td>
-                        <td> <input type="text" name="webhook_url" id="webhook_url"
-                                value="{{ prev_webhook_url }}" /><input class="button1" type="submit"
-                                formaction="/form/test" value="Test">
+                        <td>
+                            <strong>Discord Webhook Url:</strong>
                         </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Youtube Channel Url:</strong></td>
-                        <td> <input type=" text" name="channel_url" id="channel_url" value="{{ prev_channel_url }}" />
+                        <td>
+                            <input type="text" name="webhook_url" id="webhook_url" value="{{ prev_webhook_url }}" />
+                        </td>
+                        <td>
+                            <input class="test" type="submit" formaction="/form/test" value="Test">
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p><strong>{{ info }}</strong></p>
+                            <strong>Youtube Channel Url:</strong>
                         </td>
-                        <td> <input class="button" type="submit" formaction="/form/subscribe" value="subscribe"> <input
-                                class="button" type="submit" formaction="/form/unsubscribe" value="unsubscribe"></td>
+                        <td>
+                            <input type=" text" name="channel_url" id="channel_url" value="{{ prev_channel_url }}" />
+                        </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input class="subscribe" type="submit" formaction="/form/subscribe" value="Subscribe">
+                            <input class="unsubscribe" type="submit" formaction="/form/unsubscribe" value="Unsubscribe">
+                        </td>
+                    </tr>
+                    <td></td>
+                    <td>
+                        <p style="text-align: center;"><strong>{{ info }}</strong></p>
+                    </td>
                 </table>
             </form>
         </div>
-        <div class="column">
+        <div class=" column">
             <img src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png"
-                style="vertical-align: middle;" width="250px" />
-
+                style="vertical-align: middle;" width="200px" />
         </div>
     </div>
 </body>
+<footer class="copyright">
+    <div class="up" id="up">
+        <a href="https://github.com/nathanielfernandes/DiscordSubHub" target="_blank"><i
+                style="font-size: 40px; float:right; margin: 5px;" class="fab fa-github-square" id="github"></i></a>
+    </div>
+    <p style="margin-left: 10px;">&copy; 2021 Nathaniel Fernandes </p>
+
+</footer>
 
 
 </html>

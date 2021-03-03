@@ -11,17 +11,17 @@ class RateLimiter:
 
     async def check_rate(self, webhook: str, token: bool = False):
         if token:
-            return False
+            return False, str(0)
         else:
             if webhook not in self.timestamps:
                 self.timestamps[webhook] = datetime.now()
-                return False
+                return False, str(0)
             else:
                 time_passed = (
                     datetime.now() - self.timestamps[webhook]
                 ).total_seconds()
                 if time_passed >= self.rate:
                     self.timestamps[webhook] = datetime.now()
-                    return False
+                    return False, str(0)
                 else:
-                    return True
+                    return True, f"{self.rate-time_passed:0.1f}"
