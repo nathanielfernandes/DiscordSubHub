@@ -6,12 +6,10 @@ from aiohttp import web
 from utils.hub import Hub
 from utils.ratelimiter import RateLimiter
 
-import datetime
-
 
 async def web_app():
     hub = Hub()
-    limit = RateLimiter(rate=5)
+    rate_limit = RateLimiter(rate=5)
     app = web.Application()
     routes = web.RouteTableDef()
     aiohttp_jinja2.setup(
@@ -20,25 +18,39 @@ async def web_app():
 
     @routes.get("/")
     @aiohttp_jinja2.template("index.html")
-    async def index(request):
+    async def index(request: web.Request):
+        """displays home page of DiscordSubHub.
+        """
         context = {}
         return context
 
     @routes.post("/form/{mode}")
     @aiohttp_jinja2.template("index.html")
-    async def form_action(request):
+    async def form_action(request: web.Request):
+        """attemps to subscribe the inputted webhook_url to the youtube_url.
+        """
+        # get the mode from the url, subscribe/unsubscribe
         mode = request.match_info["mode"]
+
+        # get the information typed in from the form
         form = await request.post()
         webhook_url, channel_url = form.get("webhook_url"), form.get("channel_url")
-        limited = await limit.check_rate(webhook_url)
 
-        if limited:
-            success, info = await hub.pubsubhub(
-                webhook_url=webhook_url, channel_url=channel_url, mode=mode
-            )
+        # check to see if the user is not within the rate limit
+        is_limited = await rate_limit.check_rate(webhook_url)
+
+        if not is_limited:
+            if mode == "test":
+                info = await hub.test(webhook_url=webhook_url)
+            else:
+                # subscribe/unsubscibe the webhook to pubsubhubbub
+                info, status = await hub.pubsubhub(
+                    webhook_url=webhook_url, channel_url=channel_url, mode=mode
+                )
         else:
             info = "Slow Down! (5s)"
 
+        # keep the entered info inside the form
         return {
             "info": info,
             "prev_webhook_url": webhook_url,
@@ -46,54 +58,62 @@ async def web_app():
         }
 
     @routes.get("/coffee")
-    async def wake_up(request):
+    async def wake_up(request: web.Request):
+        """to keep the heroku app from sleeping.
+        """
         return web.Response(text="thanks for the coffee :)")
 
     @routes.get("/pubsubhubbub")
-    async def verify_subscription(request):
+    async def verify_subscription(request: web.Request):
+        """returns the hub.challenge sent with pubsubhubbub's GET
+           to verify the subscription.
+        """
         print("PubSubHubBub verification")
         verify_token = request.query.get("hub.verify_token")
         challenge = request.query.get("hub.challenge")
+        # checks if the verification tokens match as well as for a hub.challenge
         if (verify_token == hub.verify_token) and challenge:
+            # return the hub.challenge
             return web.Response(body=challenge)
         return web.Response()
 
     @routes.post("/pubsubhubbub")
-    async def subscription_update(request):
+    async def subscription_update(request: web.Request):
+        """dispatches the notification to the webhooks subscribed to
+           the channel_id specified in the POST from pubsubhubbub.
+        """
         print("Channel Upload")
+        # get the upload information and dispatch it accordingly
         xml_data = await request.read()
         await hub.dispatch_notification(xml_data)
         return web.Response()
 
     @routes.post("/subscribe")
-    async def subscribe(request):
+    async def subscribe(request: web.Request):
+        """handles subscribe/unsubscribe POSTs.
+        """
         if request.headers is not None:
+            # get all important information from the headers
             token = request.headers.get("token")
-            webhook_url = request.headers.get("webhook_url")
-            channel_url = request.headers.get("channel_url")
+            webhook_url = request.headers.get("webhook_url", "")
+            channel_url = request.headers.get("channel_url", "")
             mode = request.headers.get("mode", "subscribe")
 
-            if webhook_url and channel_url:
-                limited = await limit.check_rate(
-                    webhook=webhook_url, token=token == hub.api_token
+            # check to see if the user is not within the rate limit
+            is_limited = await rate_limit.check_rate(
+                webhook=webhook_url, token=token == hub.api_token
+            )
+            if not is_limited:
+                # subscribe/unsubscibe the webhook to pubsubhubbub
+                info, status = await hub.pubsubhub(
+                    webhook_url=webhook_url, channel_url=channel_url, mode=mode
                 )
-
-                if limited:
-                    success, info = await hub.pubsubhub(
-                        webhook_url=webhook_url, channel_url=channel_url, mode=mode
-                    )
-                    if success:
-                        return web.Response(text=f"Successfully {mode.title()}d")
-                else:
-                    return web.Response(text="slowdown!", status=429)
-
-            return web.Response(
-                text="Invalid 'webhook_url' and/or 'channel_url' header(s)", status=400,
-            )
-        else:
-            return web.Response(
-                text="Missing 'webhook_url' and/or 'channel_url' header(s)", status=400,
-            )
+                return web.Response(text=info, status=status)
+            else:
+                return web.Response(text="Slow Down! (5s)", status=429)
+        return web.Response(
+            text="missing webhook_url and channel_url headers", status=400
+        )
 
     app.add_routes(routes)
     return app

@@ -40,6 +40,11 @@
             height: 25px;
         }
 
+        input.button1 {
+            width: 40px;
+            height: 30px;
+        }
+
         .row {
             display: flex;
         }
@@ -54,13 +59,16 @@
 <body>
     <div class="row">
         <div class="column">
-
             <form method="POST">
                 <table>
-                    <h1>DiscordSubHub</h1>
+                    <h1>DiscordSubHub
+                    </h1>
+
                     <tr>
                         <td><strong>Webhook Url:</strong></td>
-                        <td> <input type="text" name="webhook_url" id="webhook_url" value="{{ prev_webhook_url }}" />
+                        <td> <input type="text" name="webhook_url" id="webhook_url"
+                                value="{{ prev_webhook_url }}" /><input class="button1" type="submit"
+                                formaction="/form/test" value="Test">
                         </td>
                     </tr>
                     <tr>

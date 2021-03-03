@@ -6,7 +6,7 @@
   <a href="https://discordsubhub.herokuapp.com/">DiscordSubHub</a>
 </h1>
 
-<h3 align="center">A user-friendly Feed API designed for Discord Webhooks.</h3>
+<h3 align="center">A User-Friendly Feed API Designed For Discord Webhooks.</h3>
 <br>
 
 <p align="center">
@@ -32,10 +32,11 @@
 </h4>
 
 ---
+
 <br>
 
 # About
-DiscordSubHub is a Feed API designed for subscribing Discord Webhooks to noitifications from a content creator. For example, when you subscribe your discord-webhook, along with the youtube channel of the creator you want notifications from, DiscordSubHub will subscribe to the creator itself through a pubsubhub and from then relay any notifcations from the creator directly to your discord-webhook.
+DiscordSubHub is a Feed API designed for subscribing Discord Webhooks to a YouTube channel. For example, when you subscribe your discord-webhook to a youtube channel, DiscordSubHub will subscribe to the channel itself through a pubsubhub. From DiscordSubHub will relay any notifcations from the creator directly to your discord-webhook.
 
 It is currently in use by my Discord Bot [Hamood](https://nathanielfernandes.github.io/HamoodBot/), allowing users to automatically subscribe to creators through a simple command.
 
@@ -61,6 +62,13 @@ so we can discuss potentially getting you an unlimited key.
 <br>
 
 # Usage
+## Manual Method
+<p>You can subscibe/unsubscribe your webhooks directly from <a href="https://discordsubhub.herokuapp.com/">discordsubhub.herokuapp.com</a><p>
+<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/816552987103068200/unknown.png" alt="DiscordSubHub" width=600>
+<p>Uploads will be sent to your discord-webhook and will appear in chat like this:<p>
+<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/816554831790866472/unknown.png" alt="DiscordSubHub" width=400>
+
+## API Method
 #### Subscribe Endpoint
 `POST /subscribe`
 This endpoint requests a subscription/unsubscription of your webhook to a YouTube channel.
@@ -76,17 +84,21 @@ This endpoint requests a subscription/unsubscription of your webhook to a YouTub
     "mode":"subscribe"
 }
 ```
-The response upon a successful subscription will be `200 OK`
+The response upon a successful subscription/unsubscription will be `201 Created`
 ```
-Successfully Subscribed
+Successfully Subscribed/Unsubscribed!
 ```
+The response upon a subscription/unsubscription that aldready exists will be `200 OK`
+```
+Aldready Subscribed/Unsubscribed
+``` 
 The response upon an unsuccessful subscription will be `400 Bad Request`
 ```
 Invalid/Missing 'webhook_url' and/or 'channel_url' header(s)
 ```
 The response when hit by the rate limit will be `429 Too Many Requests`
 ```
-slow down!
+Slow Down! (5s)
 ```
 
 <br>
