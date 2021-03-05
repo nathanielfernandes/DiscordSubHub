@@ -5,6 +5,10 @@ import json
 
 rg = lambda x: re.sub(r"\s*{.*}\s*", "", x)
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def sift_xml(d: dict):
     """creates a smaller dict with usefull information from the xml dict
@@ -67,3 +71,21 @@ def webhook_body(creator: str, video_link: str):
         "username": "DiscordSubHub",
         "avatar_url": "https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png",
     }
+
+
+def search(soup: str, look: str):
+    try:
+        start = soup.index(look) + len(look)
+        end = soup.index('"', start)
+        return soup[start:end]
+    except ValueError:
+        return None
+
+
+def find_id(soup: str):
+    """Tries to find a youtube channel id
+    """
+    result = search(soup, 'externalId":"')
+    if result is None:
+        result = search(soup, 'data-channel-external-id="')
+    return result

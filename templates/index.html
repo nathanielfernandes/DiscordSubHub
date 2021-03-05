@@ -12,14 +12,16 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"> -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <title>DiscordSubHub</title>
 
     <style>
         body {
             width: 100%;
             margin: auto;
-            font-family: "Helvetica Neue";
+            font-family: 'Varela Round';
             background-color: #2C2F33;
             color: white;
         }
@@ -33,7 +35,7 @@
         }
 
         input {
-            font-family: "Helvetica Neue";
+            font-family: 'Varela Round';
             width: 400px;
             height: 25px;
             border-radius: 6px;
@@ -64,12 +66,13 @@
 
         .test {
             width: 40px;
-            height: 30px;
+            height: 29px;
             background-color: #23272A;
             color: white;
             transition: all 0.2s;
             font-weight: bold;
         }
+
 
         .subscribe:hover {
             /* box-shadow: 0 8px 15px rgba(0, 0, 0, .2); */
@@ -146,7 +149,7 @@
                             <strong>Youtube Channel Url:</strong>
                         </td>
                         <td>
-                            <input type=" text" name="channel_url" id="channel_url" value="{{ prev_channel_url }}" />
+                            <input type="text" name="channel_url" id="channel_url" value="{{ prev_channel_url }}" />
                         </td>
                     </tr>
                     <tr>
@@ -158,7 +161,7 @@
                     </tr>
                     <td></td>
                     <td>
-                        <p style="text-align: center;"><strong>{{ info }}</strong></p>
+                        <p style="text-align: center; color: {{ text_color }}"><strong>{{ info }}</strong></p>
                     </td>
                 </table>
             </form>

@@ -24,12 +24,22 @@ class Hub:
 
     # -- Pointer Methods --
     async def GET(
-        self, url: str, headers: dict = None, params: dict = None, data: dict = None,
+        self,
+        url: str,
+        headers: dict = None,
+        params: dict = None,
+        data: dict = None,
+        content: bool = False,
     ):
         """points to self.request, the request parameter always being "GET".
         """
         return await self.request(
-            request="GET", url=url, headers=headers, params=params, data=data
+            request="GET",
+            url=url,
+            headers=headers,
+            params=params,
+            data=data,
+            content=content,
         )
 
     async def POST(
@@ -67,6 +77,7 @@ class Hub:
         params: dict = None,
         data: dict = None,
         json: dict = None,
+        content: bool = False,
     ):
         """performs asynchronous GET/POST requests and returns the response object.
         """
@@ -74,6 +85,9 @@ class Hub:
             async with self.sesion.get(
                 url=url, headers=headers, params=params, data=data
             ) as response:
+                if content:
+                    text = await response.text()
+                    return response, text
                 return response
         elif request == "POST":
             async with self.sesion.post(
@@ -128,17 +142,28 @@ class Hub:
         """
         # check to see if the urls follow the correct format
         if webhook_url.startswith("https://discord.com/api/webhooks/"):
-            if channel_url.startswith("https://www.youtube.com/channel/UC"):
+            if channel_url.startswith("https://www.youtube.com/"):
+                if channel_url.startswith(
+                    "https://www.youtube.com/user/"
+                ) or channel_url.startswith("https://www.youtube.com/c/"):
+
+                    channel, soup = await self.GET(channel_url, content=True)
+                    channel_id = find_id(soup)
+                    if channel_id is None:
+                        return "Could Not Verify Webhook Url", 400
+
+                    channel_url = f"https://www.youtube.com/channel/{channel_id}"
+                else:
+                    channel = await self.GET(channel_url)
                 # makes a get request to check the validity of the urls based on their response statuses
                 hook = await self.GET(webhook_url)
-                channel = await self.GET(channel_url)
+
                 hook = hook.status
                 channel = channel.status
                 if channel == 200:
                     if hook == 200:
                         # get the channel id from the url
                         channel_id = parse_channel_url(channel_url)
-
                         # check the database to see if the webhook aldready exists
                         webhook_exists = await self.db.webhook_exists(
                             channel_id, webhook_url
@@ -165,9 +190,9 @@ class Hub:
                             else:
                                 return "Aldready Unsubscribed", 200
                     else:
-                        return "Invalid Webhook Url", 400
+                        return "Could Not Verify Webhook Url", 400
                 else:
-                    return "Invalid Channel Url", 400
+                    return "Could Not Verify Channel Url", 400
             else:
                 return "Unsupported Channel Url", 400
         else:

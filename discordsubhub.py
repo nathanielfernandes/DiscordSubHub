@@ -29,6 +29,7 @@ async def web_app():
     async def form_action(request: web.Request):
         """attemps to subscribe the inputted webhook_url to the youtube_url.
         """
+
         # get the mode from the url, subscribe/unsubscribe
         mode = request.match_info["mode"]
 
@@ -38,7 +39,7 @@ async def web_app():
 
         # check to see if the user is not within the rate limit
         is_limited, t = await rate_limit.check_rate(webhook_url)
-
+        text_color = "#ffffff"
         if not is_limited:
             if mode == "test":
                 info = await hub.test(webhook_url=webhook_url)
@@ -47,7 +48,10 @@ async def web_app():
                 info, status = await hub.pubsubhub(
                     webhook_url=webhook_url, channel_url=channel_url, mode=mode
                 )
+                if status >= 400:
+                    text_color = "#f84444"
         else:
+            text_color = "#f84444"
             info = f"Slow Down! {t}s"
 
         # keep the entered info inside the form
@@ -55,6 +59,7 @@ async def web_app():
             "info": info,
             "prev_webhook_url": webhook_url,
             "prev_channel_url": channel_url,
+            "text_color": text_color,
         }
 
     @routes.get("/coffee")
