@@ -5,10 +5,6 @@ import json
 
 rg = lambda x: re.sub(r"\s*{.*}\s*", "", x)
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 
 def sift_xml(d: dict):
     """creates a smaller dict with usefull information from the xml dict

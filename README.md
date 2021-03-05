@@ -64,9 +64,9 @@ so we can discuss potentially getting you an unlimited key.
 # Usage
 ## Manual Method
 <p>You can subscibe/unsubscribe your webhooks directly from <a href="https://discordsubhub.herokuapp.com/">discordsubhub.herokuapp.com</a><p>
-<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/816552987103068200/unknown.png" alt="DiscordSubHub" width=600>
+<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/817242533595447316/unknown.png" alt="DiscordSubHub" width=600>
 <p>Uploads will be sent to your discord-webhook and will appear in chat like this:<p>
-<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/816554831790866472/unknown.png" alt="DiscordSubHub" width=400>
+<img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/817242911493849118/unknown.png" alt="DiscordSubHub" width=400>
 
 ## API Method
 #### Subscribe Endpoint
