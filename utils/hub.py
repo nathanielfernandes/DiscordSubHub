@@ -141,7 +141,9 @@ class Hub:
            to the database and subscribes/unsubscribes DiscordSubHub to the channel.
         """
         # check to see if the urls follow the correct format
-        if webhook_url.startswith("https://discord.com/api/webhooks/"):
+        if webhook_url.startswith(
+            "https://discord.com/api/webhooks/"
+        ) or webhook_url.startswith("https://discordapp.com/api/webhooks/"):
             if channel_url.startswith("https://www.youtube.com/"):
                 if channel_url.startswith(
                     "https://www.youtube.com/user/"
