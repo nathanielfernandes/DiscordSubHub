@@ -2,6 +2,7 @@ import os
 import aiohttp
 from utils.mongo import *
 from utils.parsing import *
+from utils.capped_list import CappedList
 from copy import copy
 
 
@@ -21,6 +22,8 @@ class Hub:
         # gets special tokens
         self.verify_token = os.environ.get("VERIFYTOKEN")
         self.api_token = os.environ.get("APITOKEN")
+
+        self.recent_updates = CappedList(max_length=250)
 
     # -- Pointer Methods --
     async def GET(
@@ -207,19 +210,22 @@ class Hub:
         """
         # parse the xml data into a useable dict
         data = parse_xml(xml_data)
-        channel_id = data.get("channelId")
         video_link = data.get("link")
-        creator = data.get("author")
-        body = webhook_body(creator=creator, video_link=video_link)
-        webhooks = await self.db.get_webhooks(channel_id)
-        if webhooks is not None:
-            for url in webhooks:
-                response = await self.POST(
-                    url=url, headers={"Content-Type": "application/json"}, json=body,
-                )
-                status = response.status
-                if status != 204:
-                    await self.remove_webhook(channel_id, url)
+        if self.recent_updates.log(video_link):
+            channel_id = data.get("channelId")
+            creator = data.get("author")
+            body = webhook_body(creator=creator, video_link=video_link)
+            webhooks = await self.db.get_webhooks(channel_id)
+            if webhooks is not None:
+                for url in webhooks:
+                    response = await self.POST(
+                        url=url,
+                        headers={"Content-Type": "application/json"},
+                        json=body,
+                    )
+                    status = response.status
+                    if status != 204:
+                        await self.remove_webhook(channel_id, url)
 
 
 # OLD:

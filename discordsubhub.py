@@ -17,7 +17,7 @@ async def web_app():
     )
 
     @routes.get("/")
-    @aiohttp_jinja2.template("index.jinja2")
+    @aiohttp_jinja2.template("index.html")
     async def index(request: web.Request):
         """displays home page of DiscordSubHub.
         """
@@ -25,7 +25,7 @@ async def web_app():
         return context
 
     @routes.post("/form/{mode}")
-    @aiohttp_jinja2.template("index.jinja2")
+    @aiohttp_jinja2.template("index.html")
     async def form_action(request: web.Request):
         """attemps to subscribe the inputted webhook_url to the youtube_url.
         """

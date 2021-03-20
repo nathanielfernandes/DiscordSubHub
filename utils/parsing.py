@@ -40,7 +40,7 @@ def parse_xml(r, root=True):
 def parse_channel_url(url: str):
     """returns the string of the channel's id.
     """
-    return url.strip("https://www.youtube.com/channel/")
+    return url.replace("https://www.youtube.com/channel/", "")
 
 
 # https://discordsubhub.herokuapp.com/pubsubhubbub
