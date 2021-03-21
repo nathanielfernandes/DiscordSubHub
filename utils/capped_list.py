@@ -35,7 +35,13 @@ class CappedList:
         self._list = []
 
     def log(self, value):
-        if value not in self._list:
-            self.add(value)
-            return True
-        return False
+        for i in self._list:
+            if value == i:
+                return False
+
+        self.add(value)
+        return True
+
+        # if value not in self._list:
+        #     self.add(value)
+        #     return True

@@ -211,8 +211,8 @@ class Hub:
         # parse the xml data into a useable dict
         data = parse_xml(xml_data)
         video_link = data.get("link")
-        new = self.recent_updates.log(video_link.strip())
-        temp = str(self.recent_updates)
+        new = self.recent_updates.log(video_link)
+        print(video_link)
         if new:
             channel_id = data.get("channelId")
             creator = data.get("author")
