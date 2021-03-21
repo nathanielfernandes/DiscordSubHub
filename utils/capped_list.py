@@ -1,5 +1,5 @@
 class CappedList:
-    def __init__(self, data=[], max_length=25):
+    def __init__(self, data=[], max_length=100):
         self._list = list(data)
         self.max_length = max_length
 
