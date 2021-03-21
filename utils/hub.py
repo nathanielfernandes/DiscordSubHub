@@ -23,7 +23,7 @@ class Hub:
         self.verify_token = os.environ.get("VERIFYTOKEN")
         self.api_token = os.environ.get("APITOKEN")
 
-        self.recent_updates = CappedList(max_length=100)
+        self.recent_updates = CappedList()
 
     # -- Pointer Methods --
     async def GET(
@@ -211,9 +211,11 @@ class Hub:
         # parse the xml data into a useable dict
         data = parse_xml(xml_data)
         video_link = data.get("link")
+        print(self.recent_updates)
         new = self.recent_updates.log(video_link.strip())
         print(video_link)
         print(new)
+        print(self.recent_updates)
         if new:
             channel_id = data.get("channelId")
             creator = data.get("author")
