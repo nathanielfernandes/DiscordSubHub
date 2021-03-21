@@ -212,7 +212,6 @@ class Hub:
         data = parse_xml(xml_data)
         video_link = data.get("link")
         new = self.recent_updates.log(video_link)
-        print(self.recent_updates)
         if new:
             channel_id = data.get("channelId")
             creator = data.get("author")
