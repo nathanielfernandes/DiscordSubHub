@@ -39,18 +39,3 @@ class CappedList:
             self.add(value)
             return True
         return False
-
-
-class bruh:
-    def __init__(self):
-        self.l = CappedList(max_length=100)
-
-    def poop(self, stuff):
-        print(self.l.log(stuff))
-
-
-test = bruh()
-
-test.poop("https://www.youtube.com/watch?v=DZbzS34nri8")
-
-test.poop("https://www.youtube.com/watch?v=DZbzS34nri8")
