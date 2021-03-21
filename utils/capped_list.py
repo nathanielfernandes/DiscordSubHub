@@ -39,4 +39,3 @@ class CappedList:
             self.add(value)
             return True
         return False
-

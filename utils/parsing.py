@@ -12,7 +12,7 @@ def sift_xml(d: dict):
     """
     e = d.get("feed").get("entry")
     sifted = {
-        "videoId": e.get("videoId").get("_text"),
+        # "videoId": e.get("videoId").get("_text"),
         "channelId": e.get("channelId").get("_text"),
         # "videltitle": e.get("title").get("_text"),
         "link": e.get("link").get("href"),

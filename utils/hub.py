@@ -211,9 +211,10 @@ class Hub:
         # parse the xml data into a useable dict
         data = parse_xml(xml_data)
         video_link = data.get("link")
-        channel_id = data.get("channelId")
-        update = channel_id + " | " + video_link
-        if self.recent_updates.log(update):
+        print(video_link)
+        if self.recent_updates.log(video_link):
+            print("new")
+            channel_id = data.get("channelId")
             creator = data.get("author")
             body = webhook_body(creator=creator, video_link=video_link)
             webhooks = await self.db.get_webhooks(channel_id)
