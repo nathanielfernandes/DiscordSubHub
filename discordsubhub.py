@@ -6,8 +6,12 @@ from aiohttp import web
 from utils.hub import Hub
 from utils.ratelimiter import RateLimiter
 
+# from utils.resubber
+
 
 async def web_app():
+
+    #  resubs
     hub = Hub()
     rate_limit = RateLimiter(rate=5)
     app = web.Application()
@@ -61,6 +65,17 @@ async def web_app():
             "prev_channel_url": channel_url,
             "text_color": text_color,
         }
+
+    @routes.get("/refreshsubs/{token}")
+    async def wake_up(request: web.Request):
+        """refreshes all expired subscriptions
+        """
+        token = request.match_info["token"]
+
+        if token == hub.api_token:
+            await hub.refresh_subscriptions()
+
+        return web.Response(text="success")
 
     @routes.get("/coffee")
     async def wake_up(request: web.Request):

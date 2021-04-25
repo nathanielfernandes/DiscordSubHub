@@ -137,6 +137,17 @@ class Hub:
         else:
             return "Unsupported Webhook Url"
 
+    async def refresh_subscriptions(self):
+        expired = await self.db.get_expired_subscriptions()
+        for channel_id in expired:
+            data = pubsubhub_data(
+                channel_id=channel_id, verify_token=self.verify_token, mode="subscribe",
+            )
+            await self.POST(self.pubsubhub_url, data=data)
+            await self.db.refresh_subscription(channel_id=channel_id)
+
+        print(f"Refreshed {len(expired)} Subscriptions")
+
     async def pubsubhub(
         self, webhook_url: str, channel_url: str, mode: str = "subscribe"
     ) -> (str, int):
@@ -225,7 +236,7 @@ class Hub:
                         json=body,
                     )
                     status = response.status
-                    if status != 204:
+                    if status == 404:
                         await self.remove_webhook(channel_id, url)
 
 

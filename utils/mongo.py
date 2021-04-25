@@ -1,6 +1,13 @@
 import os
 import pymongo
 import motor.motor_asyncio
+from datetime import datetime
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SUBSCRIPTIONINTERVAL = 423360
 
 
 class Mongo_Youtube:
@@ -12,6 +19,39 @@ class Mongo_Youtube:
         self.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(self.MONGOURI))
         self.database = self.mongo["discordsubhub"]
         self.collection = self.database["youtube"]
+
+    def get_client(self):
+        return self.mongo
+
+    async def get_collection(self):
+        """returns the entire collection
+        """
+        cursor = self.collection.find()
+        return await cursor.to_list(length=None)
+
+    async def get_all_ids(self):
+        """returns all the ids in a collection
+        """
+        collection = await self.get_collection()
+        return [doc["_id"] for doc in collection]
+
+    async def get_all_lastsubscribed(self):
+        collection = await self.get_collection()
+        return {doc["_id"]: doc["lastsubscribed"] for doc in collection}
+
+    async def get_expired_subscriptions(self):
+        collection = await self.get_collection()
+        return [
+            doc["_id"]
+            for doc in collection
+            if (datetime.now() - doc["lastsubscribed"]).total_seconds()
+            > SUBSCRIPTIONINTERVAL
+        ]
+
+    async def refresh_subscription(self, channel_id):
+        await self.collection.update_one(
+            {"_id": channel_id}, {"$set": {"lastsubscribed": datetime.now()}}
+        )
 
     async def get_webhooks(self, channel_id: str):
         """returns the list of webhooks under a channel
@@ -43,7 +83,9 @@ class Mongo_Youtube:
         """Upserts a channel into the database.
         """
         try:
-            await self.collection.insert_one({"_id": channel_id, "webhooks": []})
+            await self.collection.insert_one(
+                {"_id": channel_id, "webhooks": [], "lastsubscribed": datetime.now()}
+            )
         except pymongo.errors.DuplicateKeyError:
             return
 
@@ -86,3 +128,4 @@ class Mongo_Youtube:
             return webhook in webhooks
         else:
             return False
+
