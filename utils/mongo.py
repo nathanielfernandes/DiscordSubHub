@@ -3,10 +3,6 @@ import pymongo
 import motor.motor_asyncio
 from datetime import datetime
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 SUBSCRIPTIONINTERVAL = 423360
 
 
