@@ -62,10 +62,10 @@ def webhook_body(creator: str, video_link: str):
     """returns a dict containing the data needed for a webhook notification.
     """
     return {
-        "content": f"[New Upload From]({video_link}) **{creator}**",
+        "content": f"**{creator}** just uploaded a new video, [check it out!]({video_link})",
         "embeds": None,
         "username": "DiscordSubHub",
-        "avatar_url": "https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png",
+        "avatar_url": "https://cdn.discordapp.com/attachments/741384050387714162/837936214903881748/7dc993c70d4adba215b87cafdc59d82d.png",  # https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png
     }
 
 
