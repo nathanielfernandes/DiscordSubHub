@@ -15,8 +15,8 @@ type Feed struct {
 type Entry struct {
 	XMLName   xml.Name `xml:"entry"`
 	Id        string   `xml:"id"`
-	VideoId   string   `xml:"yt:videoId"`
-	ChannelId string   `xml:"yt:channelId"`
+	VideoId   string   `xml:"videoId"`
+	ChannelId string   `xml:"channelId"`
 	Title     string   `xml:"title"`
 	Link      Link     `xml:"link"`
 	Author    Author   `xml:"author"`

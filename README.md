@@ -1,7 +1,7 @@
 <p align="center"> 
 <img href="https://discordsubhub.herokuapp.com/" src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" alt="DiscordSubHub" width=150>
 </p>
-<!-- <img src="https://cdn.discordapp.com/attachments/741384050387714162/815695936436043816/discordsubhub2.png" alt="DiscordSubHub" class="center"> -->
+
 <h1 align="center">
   <a href="https://discordsubhub.herokuapp.com/">DiscordSubHub</a>
 </h1>
@@ -9,7 +9,9 @@
 <h3 align="center">A User-Friendly Feed API Designed For Discord Webhooks.</h3>
 <br>
 
-<p align="center">
+`Go rewrite` readme comming soon.
+
+<!-- <p align="center">
     <a href="https://https://github.com/nathanielfernandes/DiscordSubHub">
     <img src="https://img.shields.io/github/last-commit/nathanielfernandes/DiscordSubHub.svg?style=for-the-badge&logo=github&logoColor=white"
          alt="GitHub last commit">
@@ -95,7 +97,7 @@ This endpoint requests a subscription/unsubscription of your webhook to a YouTub
 }
 ```
 
-The response upon a successful subscription/unsubscription will be `201 Created`
+The response upon a successful subscription/unsubscription will be `200 Ok`
 
 ```
 Successfully Subscribed/Unsubscribed!
@@ -123,4 +125,4 @@ Slow Down! (5s)
 
 # License
 
-DiscordSubHub is licensed under the MIT license.
+DiscordSubHub is licensed under the MIT license. -->

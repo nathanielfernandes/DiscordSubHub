@@ -3,9 +3,6 @@ package discord
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -24,25 +21,28 @@ func NewMessage(content string, username string, avatar_url string, embeds []Emb
 	return &Message{Content: content, Username: username, AvatarUrl: avatar_url, Embeds: embeds}
 }
 
-func (m *Message) asPayload() *bytes.Buffer {
+func (m *Message) AsPayload() *bytes.Buffer {
 	buffer := new(bytes.Buffer)
 	json.NewEncoder(buffer).Encode(m)
 	return buffer
 }
 
 func (m *Message) Send(webhook_url string) {
-	resp, err := http.Post(webhook_url, "application/json", m.asPayload())
-
+	resp, err := http.Post(webhook_url, "application/json", m.AsPayload())
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+}
+
+func SendPayload(webhook_url *string, payload *bytes.Buffer) int {
+	resp, err := http.Post(*webhook_url, "application/json", payload)
 
 	if err != nil {
-		log.Fatal(err)
+		return 0
 	}
 
-	fmt.Println(string(body))
+	defer resp.Body.Close()
+	return resp.StatusCode
 }
