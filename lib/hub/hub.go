@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"discordsubhub/lib/discord"
 	"discordsubhub/lib/feed"
-	"discordsubhub/lib/ratelimit"
+
+	rl "github.com/nathanielfernandes/rl"
+
 	"fmt"
 	"net/http"
 	"net/url"
@@ -26,11 +28,11 @@ const BASETOPIC = "https://www.youtube.com/xml/feeds/videos.xml?channel_id="
 type Hub struct {
 	Shm      *SubHubMongo
 	Uploaded map[string]bool
-	Rlm      *ratelimit.RatelimitManager
+	Rlm      *rl.RatelimitManager
 }
 
 func NewHub() Hub {
-	return Hub{Shm: NewSubHubMongo(), Uploaded: make(map[string]bool), Rlm: ratelimit.NewRatelimitManager(1, 5000)}
+	return Hub{Shm: NewSubHubMongo(), Uploaded: make(map[string]bool), Rlm: rl.NewRatelimitManager(1, 5000)}
 }
 
 func (h *Hub) pushNotification(id, webhook_url *string, payload *bytes.Buffer) {

@@ -108,3 +108,14 @@ func (h *Hub) PubsubhubHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method is not supported.", http.StatusNotFound)
 	}
 }
+
+func (h *Hub) RefreshSubsciptions(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		PubsubChallenge(&w, r)
+	case "POST":
+		h.PostNotification(&w, r)
+	default:
+		http.Error(w, "Method is not supported.", http.StatusNotFound)
+	}
+}
